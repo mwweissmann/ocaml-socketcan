@@ -1,0 +1,53 @@
+OASISFormat: 0.4
+Name:        socketcan
+Version:     0.8.0
+Synopsis:    bindings to socketcan, the Linux CAN bus interface
+Authors:     Markus W. Weissmann <markus.weissmann@in.tum.de>
+Maintainers: Markus W. Weissmann <markus.weissmann@in.tum.de>
+Homepage:    https://github.com/mwweissmann/ocaml-socketcan/
+License:     MIT
+Plugins:     META (0.4)
+
+Library "socketcan"
+  Path:       src
+  CSources:   can_stubs.c, bcm_stubs.c
+  CCLib:      -lrt
+  CCOpt:      -O2 -Wall -Wextra -Wno-unused-parameter -I $libdir
+  BuildTools: ocamlbuild
+  Modules:    Socketcan
+  BuildDepends: unix, result, posix-time
+
+Document doclib
+  Title:                API reference for SocketCAN
+  Type:                 ocamlbuild (0.3)
+  Install:              false
+  BuildTools+:          ocamlbuild, ocamldoc
+  XOCamlbuildPath:      src
+  XOCamlbuildLibraries: socketcan
+
+
+Executable "test"
+  Path:       src
+  MainIs:     test.ml
+  BuildDepends: socketcan
+  CompiledObject: best
+  BuildTools: ocamlbuild
+  Install: false
+
+Executable "candump"
+  Path:       tools
+  MainIs:     candump.ml
+  BuildDepends: socketcan
+  CompiledObject: best
+  BuildTools: ocamlbuild
+  Install: true
+
+Executable "heartbeat"
+  Path:       tools
+  MainIs:     heartbeat.ml
+  BuildDepends: socketcan
+  CompiledObject: best
+  BuildTools: ocamlbuild
+  Install: true
+
+
