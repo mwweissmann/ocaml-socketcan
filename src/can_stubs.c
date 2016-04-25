@@ -269,7 +269,7 @@ CAMLprim value can_receive(value socket) {
     frame = caml_alloc(3, 0); // Frame.t
     Store_field(frame, 0, id);
     Store_field(frame, 1, data);
-    Store_field(frame, 2, timestamp_val(t));
+    Store_field(frame, 2, val_timespec(t));
 
     result = caml_alloc(1, 0); // Result.Ok
     Store_field(result, 0, frame);
