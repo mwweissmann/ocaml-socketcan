@@ -26,10 +26,10 @@ let _ =
     let msg = get_ok (Socketcan.Frame.create canid payload) in
     let socket = get_ok (Socketcan.BCM.create Sys.argv.(1)) in
 
-    let open Socketcan.BCM in
     let t1 = Posix_time.Timeval.create 0L 0L in
     let t2 = Posix_time.Timeval.create 0L 100000L in
 
+    let open Socketcan.BCM in
     let _ = Socketcan.BCM.write socket [TX_SETUP] [SETTIMER; STARTTIMER] (0, t1, t2, canid) [msg] in
     Unix.sleep(600)
 
