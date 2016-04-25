@@ -26,6 +26,8 @@
 #include <caml/fail.h>
 #include <caml/unixsupport.h>
 
+#include <posix-time/posix-time.h>
+
 static value eunix;
 
 CAMLprim value bcm_initialize(void) {
@@ -145,10 +147,8 @@ CAMLprim value bcm_write(value socket, value opcodes, value flags, value options
   msg->opcode = convert_flag_list(opcodes, bcm_opcode_table);
   msg->flags = convert_flag_list(flags, bcm_flag_table);
   msg->count = Int_val(Field(options, 0));
-  msg->ival1.tv_sec = Int64_val(Field(Field(options, 1), 0));
-  msg->ival1.tv_usec = Int64_val(Field(Field(options, 1), 1));
-  msg->ival2.tv_sec = Int64_val(Field(Field(options, 2), 0));
-  msg->ival2.tv_usec = Int64_val(Field(Field(options, 2), 1));
+  msg->ival1 = timeval_val(Field(options, 1));
+  msg->ival2 = timeval_val(Field(options, 2));
   msg->can_id = Int_val(Field(options, 3));
   msg->nframes = nframes;
 
