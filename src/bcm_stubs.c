@@ -18,6 +18,14 @@
 #include <linux/can/error.h>
 #include <linux/can/bcm.h>
 
+// "early" linux/can.h -- missing defines in at least kernel version 3.2
+#ifndef CAN_MTU
+ #define CAN_MTU         (sizeof(struct can_frame))
+#endif
+#ifndef CAN_MAX_DLEN
+ #define CAN_MAX_DLEN 8
+#endif
+
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h> 
