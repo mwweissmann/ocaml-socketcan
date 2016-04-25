@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        socketcan
-Version:     0.8.2
+Version:     0.8.3
 Synopsis:    bindings to socketcan, the Linux CAN bus interface
 Authors:     Markus W. Weissmann <markus.weissmann@in.tum.de>
 Maintainers: Markus W. Weissmann <markus.weissmann@in.tum.de>
@@ -39,7 +39,7 @@ Executable "candump"
   BuildDepends: socketcan
   CompiledObject: best
   BuildTools: ocamlbuild
-  Install: true
+  Install: false
 
 Executable "heartbeat"
   Path:       tools
@@ -47,6 +47,5 @@ Executable "heartbeat"
   BuildDepends: socketcan
   CompiledObject: best
   BuildTools: ocamlbuild
-  Install: true
-
+  Install: false
 
