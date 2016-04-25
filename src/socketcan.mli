@@ -225,6 +225,9 @@ module Socket : sig
   (** [create s] opens the can-interface named [s] (e.g. "can0") *)
   val create : string -> (t, [> `EUnix of Unix.error]) Result.result
 
+  (** [close s] closes the socket [s]. *)
+  val close : t -> unit
+
   (** [set_receive_filter s fs] adds the list of input filters [fs] to the
       socket [s]; the socket will then only receive frames the can-id of which
       matches any of the given filters;
@@ -290,6 +293,9 @@ module BCM : sig
   (** [create s] opens the can-interface named [s] (e.g. "can0") *)
   val create : string -> (t, [>`EUnix of Unix.error]) Result.result
 
+  (** [close s] closes the socket [s]. *)
+  val close : t -> unit
+
   (** time value with seconds [tv_sec] and microseconds [tv_usec] *)
   type timer = Posix_time.Timeval.t
 
@@ -297,5 +303,9 @@ module BCM : sig
       configuration to the broadcast socket *)
   val write : t -> opcode list -> flag list -> (int * timer * timer * Id.t) ->
     Frame.t list -> (unit, [>`EUnix of Unix.error]) Result.result
+
+  (** [fs s] will return a Unix-file-descriptor of the socket [s];
+      this file-descriptor can then be used with e.g. [Unix.select]. *)
+  val fd : t -> Unix.file_descr
 end
 

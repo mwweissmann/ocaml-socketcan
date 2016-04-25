@@ -186,6 +186,8 @@ module Socket = struct
 
   external create : string -> (t, [>`EUnix of Unix.error]) Result.result = "can_open"
 
+  let close = Unix.close
+
   external set_receive_filter : t -> Filter.t list -> (t, [> `EUnix of Unix.error ]) Result.result = "can_receive_filter"
 
   external set_error_flags : t -> error_flag list -> (t, [>`EUnix of Unix.error]) Result.result = "can_error_flags"
@@ -231,7 +233,11 @@ module BCM = struct
 
   external create : string -> (t, [>`EUnix of Unix.error]) Result.result = "bcm_open"
 
+  let close = Unix.close
+
   external write : t -> opcode list -> flag list -> (int * timer * timer * Id.t) -> Frame.t list -> (unit, [>`EUnix of Unix.error]) Result.result = "bcm_write"
+
+  external fd : t -> t = "%identity"
 end
 
 external can_initialize : unit -> unit = "can_initialize"
