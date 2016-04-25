@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: bc083002ee71fe47b6d29fb86cafeb77)
+# DO NOT EDIT (digest: 6640a0a5888b40c970efa76402e135a4)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -19,11 +19,6 @@ true: annot, bin_annot
 <src/*.ml{,i,y}>: oasis_library_socketcan_ccopt
 "src/can_stubs.c": oasis_library_socketcan_ccopt
 "src/bcm_stubs.c": oasis_library_socketcan_ccopt
-<src/socketcan.{cma,cmxa}>: oasis_library_socketcan_cclib
-"src/libsocketcan_stubs.lib": oasis_library_socketcan_cclib
-"src/dllsocketcan_stubs.dll": oasis_library_socketcan_cclib
-"src/libsocketcan_stubs.a": oasis_library_socketcan_cclib
-"src/dllsocketcan_stubs.so": oasis_library_socketcan_cclib
 <src/socketcan.{cma,cmxa}>: use_libsocketcan_stubs
 "src/can_stubs.c": pkg_posix-time
 "src/can_stubs.c": pkg_result
