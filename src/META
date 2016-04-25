@@ -1,8 +1,8 @@
 # OASIS_START
-# DO NOT EDIT (digest: 204bc2be8137009360b4c9abc70b1c25)
-version = "0.8.1"
+# DO NOT EDIT (digest: 96d791b2db6adf2a91ef99aceabe4943)
+version = "0.8.2"
 description = "bindings to socketcan, the Linux CAN bus interface"
-requires = "unix result posix-time"
+requires = "unix bytes result posix-time"
 archive(byte) = "socketcan.cma"
 archive(byte, plugin) = "socketcan.cma"
 archive(native) = "socketcan.cmxa"

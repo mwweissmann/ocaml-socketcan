@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        socketcan
-Version:     0.8.1
+Version:     0.8.2
 Synopsis:    bindings to socketcan, the Linux CAN bus interface
 Authors:     Markus W. Weissmann <markus.weissmann@in.tum.de>
 Maintainers: Markus W. Weissmann <markus.weissmann@in.tum.de>
@@ -14,7 +14,7 @@ Library "socketcan"
   CCOpt:      -O2 -Wall -Wextra -Wno-unused-parameter -I $libdir
   BuildTools: ocamlbuild
   Modules:    Socketcan
-  BuildDepends: unix, result, posix-time
+  BuildDepends: unix, bytes, result, posix-time
 
 Document doclib
   Title:                API reference for SocketCAN

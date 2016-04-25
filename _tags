@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 6640a0a5888b40c970efa76402e135a4)
+# DO NOT EDIT (digest: 87ead37c2f4a82de92ba680009dbf217)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -20,31 +20,38 @@ true: annot, bin_annot
 "src/can_stubs.c": oasis_library_socketcan_ccopt
 "src/bcm_stubs.c": oasis_library_socketcan_ccopt
 <src/socketcan.{cma,cmxa}>: use_libsocketcan_stubs
+"src/can_stubs.c": pkg_bytes
 "src/can_stubs.c": pkg_posix-time
 "src/can_stubs.c": pkg_result
 "src/can_stubs.c": pkg_unix
+"src/bcm_stubs.c": pkg_bytes
 "src/bcm_stubs.c": pkg_posix-time
 "src/bcm_stubs.c": pkg_result
 "src/bcm_stubs.c": pkg_unix
 # Executable test
+<src/test.{native,byte}>: pkg_bytes
 <src/test.{native,byte}>: pkg_posix-time
 <src/test.{native,byte}>: pkg_result
 <src/test.{native,byte}>: pkg_unix
 <src/test.{native,byte}>: use_socketcan
+<src/*.ml{,i,y}>: pkg_bytes
 <src/*.ml{,i,y}>: pkg_posix-time
 <src/*.ml{,i,y}>: pkg_result
 <src/*.ml{,i,y}>: pkg_unix
 <src/*.ml{,i,y}>: use_socketcan
 # Executable candump
+<tools/candump.{native,byte}>: pkg_bytes
 <tools/candump.{native,byte}>: pkg_posix-time
 <tools/candump.{native,byte}>: pkg_result
 <tools/candump.{native,byte}>: pkg_unix
 <tools/candump.{native,byte}>: use_socketcan
 # Executable heartbeat
+<tools/heartbeat.{native,byte}>: pkg_bytes
 <tools/heartbeat.{native,byte}>: pkg_posix-time
 <tools/heartbeat.{native,byte}>: pkg_result
 <tools/heartbeat.{native,byte}>: pkg_unix
 <tools/heartbeat.{native,byte}>: use_socketcan
+<tools/*.ml{,i,y}>: pkg_bytes
 <tools/*.ml{,i,y}>: pkg_posix-time
 <tools/*.ml{,i,y}>: pkg_result
 <tools/*.ml{,i,y}>: pkg_unix
