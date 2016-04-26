@@ -6,19 +6,18 @@ let _ =
   match Sys.argv.(1) with
   | "in" ->
     begin
-      let () = print_endline "in" in
-      let () = Printf.printf "line %d\n" __LINE__ in
+      let () = print_endline "create vcan0" in
       let fd_ = Socketcan.Socket.create "vcan0" in
-      let () = Printf.printf "line %d\n%!" __LINE__ in
+      let () = print_endline "force o.k. on socket" in
       let fd = get_ok fd_ in
-      let () = Printf.printf "line %d\n%!" __LINE__ in
+      let () = print_endline "set_receive_filter" in
       let fd = get_ok (Socketcan.Socket.set_receive_filter fd
         [
           Socketcan.Filter.create ~error_frames:`Also ~remote_frames:`Also ~mask:Socketcan.Mask.sff (Socketcan.Id.create_sff 815);
           Socketcan.Filter.create ~mask:Socketcan.Mask.sff (Socketcan.Id.create_sff 42);
         ])
       in
-      let () = Printf.printf "line %d\n%!" __LINE__ in
+      let () = print_endline "receive data.." in
       let () =
         match ((Socketcan.Socket.receive fd) >>| Socketcan.Frame.print) with
           | Result.Ok () -> ()
