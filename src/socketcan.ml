@@ -164,8 +164,12 @@ module Filter = struct
     let err_id, err_mask = bits err_flag err in
 
     let effbit_mask = Int32.lognot eff_flag in
-    let can_id = (Int32.logand id eff_mask) |> Int32.logand effbit_mask |> Int32.logor eff_id |> Int32.logor rtr_id |> Int32.logor err_id in
-    let can_mask = (Int32.logand m eff_mask) |> Int32.logand effbit_mask |> Int32.logor eff_mask |> Int32.logor rtr_mask |> Int32.logor err_mask in
+    let can_id =
+      Int32.logor err_id (Int32.logor rtr_id (Int32.logor eff_id (Int32.logand effbit_mask (Int32.logand id eff_mask))))
+    in
+    let can_mask =
+      Int32.logor err_mask (Int32.logor rtr_mask (Int32.logor eff_mask (Int32.logand effbit_mask (Int32.logand m eff_mask))))
+    in
     Printf.printf "filter: id=0x%lX, mask=0x%lX\n%!" can_id can_mask;
     { can_id; can_mask }
 end
