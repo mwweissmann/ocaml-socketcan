@@ -74,6 +74,7 @@ CAMLprim value can_open(value ifname) {
     goto ERROR;
   }
 
+  memset(&addr, 0, sizeof(addr));
   addr.can_family = AF_CAN;
   addr.can_ifindex = ifr.ifr_ifindex;
   if (0 > bind(fd, (struct sockaddr*)&addr, sizeof(addr))) {
@@ -83,7 +84,6 @@ CAMLprim value can_open(value ifname) {
 
   const int timestamp_on = 1;
   if (0 > setsockopt(fd, SOL_SOCKET, SO_TIMESTAMPNS, &timestamp_on, sizeof(timestamp_on))) {
-assert(false);
     lerrno = errno;
     goto ERROR;
   }
@@ -230,6 +230,8 @@ CAMLprim value can_receive(value socket) {
   struct timespec t;
   struct cmsghdr *cmsg;
 
+  memset(&msg, 0, sizeof(msg));
+  memset(&iov, 0, sizeof(iov));
   fd = Int_val(socket);
 
   caml_release_runtime_system();
@@ -286,25 +288,27 @@ CAMLprim value can_receive(value socket) {
   CAMLreturn(result);
 }
 
-value can_send(value fd, value frame) {
-  CAMLparam2(fd, frame);
-  CAMLlocal4(result, id, data, perrno);
+value can_send(value socket, value frame) {
+  CAMLparam2(socket, frame);
+  CAMLlocal3(result, data, perrno);
   size_t dlc;
   ssize_t len;
   struct can_frame buffer;
+  int fd;
 
-  id = Field(frame, 0);
+  fd = Int_val(socket);
   data = Field(frame, 1);
   dlc = caml_string_length(data);
 
   assert(dlc <= CAN_MAX_DLEN);
 
-  buffer.can_id = Int32_val(id);
-  buffer.can_dlc = dlc;
+  memset(&buffer, 0, sizeof(buffer));
   memcpy((void *) & buffer.data, String_val(data), dlc);
+  buffer.can_id = Int32_val(Field(frame, 0));
+  buffer.can_dlc = dlc;
 
   caml_release_runtime_system();
-  len = write(Int_val(fd), &buffer, sizeof(buffer));
+  len = write(fd, &buffer, sizeof(buffer));
   caml_acquire_runtime_system();
 
   if (-1 == len) {
