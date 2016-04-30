@@ -1,0 +1,308 @@
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Socketcan" rel="Chapter" href="Socketcan.html"><title>Index of values</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of values</h1>
+<table>
+<tr><td align="left"><br>C</td></tr>
+<tr><td><a href="Socketcan.BCM.html#VALclose">close</a> [<a href="Socketcan.BCM.html">Socketcan.BCM</a>]</td>
+<td><div class="info">
+<code class="code">close s</code> closes the socket <code class="code">s</code>.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Socket.html#VALclose">close</a> [<a href="Socketcan.Socket.html">Socketcan.Socket</a>]</td>
+<td><div class="info">
+<code class="code">close s</code> closes the socket <code class="code">s</code>.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.BCM.html#VALcreate">create</a> [<a href="Socketcan.BCM.html">Socketcan.BCM</a>]</td>
+<td><div class="info">
+<code class="code">create s</code> opens the can-interface named <code class="code">s</code> (e.g.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Socket.html#VALcreate">create</a> [<a href="Socketcan.Socket.html">Socketcan.Socket</a>]</td>
+<td><div class="info">
+<code class="code">create s</code> opens the can-interface named <code class="code">s</code> (e.g.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Filter.html#VALcreate">create</a> [<a href="Socketcan.Filter.html">Socketcan.Filter</a>]</td>
+<td><div class="info">
+<code class="code">create ~mask:m id</code> creates a new receive filter that matches can-ids for
+      which <code class="code">received_id &amp; mask = id &amp; mask</code>; the default value for <code class="code">can_mask</code>
+      is <code class="code">eff_mask</code>.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALcreate">create</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">create i data</code> creates a new CAN frame with CAN-id <code class="code">i</code> and payload
+      <code class="code">data</code>; the payload size must not exceed <code class="code">max_dlen</code> bytes else
+      <code class="code">Result.Error</code> is returned.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALcreate_data">create_data</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">create i p</code> creates a new CAN data frame with CAN-id <code class="code">i</code> and payload <code class="code">p</code>;
+      the payload size must not exceed <code class="code">max_dlen</code> bytes else <code class="code">Result.Error</code> is
+      returned.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALcreate_data_exn">create_data_exn</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">create_exn i p</code> is identical to <code class="code">create i p</code> but will raise
+      <code class="code">Invalid_argument</code> in case the payload size is exceeded.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Mask.html#VALcreate_eff">create_eff</a> [<a href="Socketcan.Mask.html">Socketcan.Mask</a>]</td>
+<td><div class="info">
+Create a valid CAN 2.0B <i>extended frame format</i> mask with 29 bit from
+      an integer value.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Id.html#VALcreate_eff">create_eff</a> [<a href="Socketcan.Id.html">Socketcan.Id</a>]</td>
+<td><div class="info">
+Create a valid CAN 2.0B <i>extended frame format</i> identifier with 29 bit
+      from an integer value.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALcreate_exn">create_exn</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">create_exn i data</code> is identical to <code class="code">create i data</code> but will raise
+      <code class="code">Invalid_argument</code> in case the payload size is exceeded.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALcreate_rtr">create_rtr</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">create_rtr i</code> creates a new <i>remote transmission request</i> CAN frame
+      with CAN-id <code class="code">i</code>.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Mask.html#VALcreate_sff">create_sff</a> [<a href="Socketcan.Mask.html">Socketcan.Mask</a>]</td>
+<td><div class="info">
+Create a valid CAN 2.0A <i>standard frame format</i> mask with 11 bit from
+      an integer value.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Id.html#VALcreate_sff">create_sff</a> [<a href="Socketcan.Id.html">Socketcan.Id</a>]</td>
+<td><div class="info">
+Create a valid CAN 2.0A <i>standard frame format</i> identifier with 11 bit
+      from an integer value.
+</div>
+</td></tr>
+<tr><td align="left"><br>D</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALdata">data</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">data f</code> returns the payload of the frame <code class="code">f</code>
+</div>
+</td></tr>
+<tr><td align="left"><br>E</td></tr>
+<tr><td><a href="Socketcan.Mask.html#VALeff">eff</a> [<a href="Socketcan.Mask.html">Socketcan.Mask</a>]</td>
+<td><div class="info">
+This is the bitmask of an <i>extended frame format</i> CAN identifier with
+      29 bit.
+</div>
+</td></tr>
+<tr><td align="left"><br>F</td></tr>
+<tr><td><a href="Socketcan.BCM.html#VALfd">fd</a> [<a href="Socketcan.BCM.html">Socketcan.BCM</a>]</td>
+<td><div class="info">
+<code class="code">fs s</code> will return a Unix-file-descriptor of the socket <code class="code">s</code>;
+      this file-descriptor can then be used with e.g.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Socket.html#VALfd">fd</a> [<a href="Socketcan.Socket.html">Socketcan.Socket</a>]</td>
+<td><div class="info">
+<code class="code">fs s</code> will return a Unix-file-descriptor of the socket <code class="code">s</code>;
+      this file-descriptor can then be used with e.g.
+</div>
+</td></tr>
+<tr><td align="left"><br>I</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALid">id</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">id f</code> returns the CAN-id of the frame <code class="code">f</code>.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALis_eff">is_eff</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">is_eff frame</code> returns whether the frame <code class="code">frame</code> is an <i>extended frame
+      format</i> frame.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Id.html#VALis_eff">is_eff</a> [<a href="Socketcan.Id.html">Socketcan.Id</a>]</td>
+<td><div class="info">
+<code class="code">is_eff id</code> returns whether the id <code class="code">id</code> is an <i>extended frame format</i>
+      identifier.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALis_error">is_error</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">is_error frame</code> returns whether the frame <code class="code">frame</code> is an error message
+      frame
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALis_rtr">is_rtr</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">is_rtr frame</code> returns whether the frame <code class="code">frame</code> is a
+      <i>remote transmission request</i> frame.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALis_sff">is_sff</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">is_sff frame</code> returns whether the frame <code class="code">frame</code> is a <i>standard frame
+      format</i> frame.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Id.html#VALis_sff">is_sff</a> [<a href="Socketcan.Id.html">Socketcan.Id</a>]</td>
+<td><div class="info">
+<code class="code">is_sff id</code> returns whether the id <code class="code">id</code> is a <i>standard frame format</i>
+      identifier.
+</div>
+</td></tr>
+<tr><td align="left"><br>M</td></tr>
+<tr><td><a href="Socketcan.Id.html#VALmake_eff">make_eff</a> [<a href="Socketcan.Id.html">Socketcan.Id</a>]</td>
+<td><div class="info">
+<code class="code">make_eff id</code> transforms a CAN id making it an <i>extended frame format</i>
+      identifier.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Id.html#VALmake_sff">make_sff</a> [<a href="Socketcan.Id.html">Socketcan.Id</a>]</td>
+<td><div class="info">
+<code class="code">make_sff id</code> transforms a CAN id making it a <i>standard frame format</i>
+      identifier.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALmax_dlen">max_dlen</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+The maximum payload length in bytes of a CAN frame
+</div>
+</td></tr>
+<tr><td align="left"><br>P</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALprint">print</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">print f</code> prints the frame f to <code class="code">stdout</code> in a human-readable fashion.
+</div>
+</td></tr>
+<tr><td align="left"><br>R</td></tr>
+<tr><td><a href="Socketcan.Socket.html#VALreceive">receive</a> [<a href="Socketcan.Socket.html">Socketcan.Socket</a>]</td>
+<td><div class="info">
+<code class="code">receive s</code> will blocking wait for the next frame on the socket <code class="code">s</code>;
+      the returned frame is a copy and will not be altered by subsequent calls
+      to <code class="code">receive</code>.
+</div>
+</td></tr>
+<tr><td align="left"><br>S</td></tr>
+<tr><td><a href="Socketcan.Socket.html#VALsend">send</a> [<a href="Socketcan.Socket.html">Socketcan.Socket</a>]</td>
+<td><div class="info">
+<code class="code">send s f</code> will send the frame <code class="code">f</code> on the socket <code class="code">s</code>; this call will block
+      if the interface is not ready.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALset_data">set_data</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">set_data f d</code> returns a new frame with the payload set to <code class="code">d</code>.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALset_eff">set_eff</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">set_eff frame</code> returns a new frame with the <i>extended frame format</i>
+      flag set.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALset_error">set_error</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">set_error frame</code> returns a new frame with the <i>error message</i>
+      flag set.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Socket.html#VALset_error_flags">set_error_flags</a> [<a href="Socketcan.Socket.html">Socketcan.Socket</a>]</td>
+<td><div class="info">
+<code class="code">set_error_flags s es</code> will alter the socket <code class="code">s</code> such that all errors as
+      selected in <code class="code">es</code> will now be sent as CAN frames to the socket.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Socket.html#VALset_receive_filter">set_receive_filter</a> [<a href="Socketcan.Socket.html">Socketcan.Socket</a>]</td>
+<td><div class="info">
+<code class="code">set_receive_filter s fs</code> adds the list of input filters <code class="code">fs</code> to the
+      socket <code class="code">s</code>; the socket will then only receive frames the can-id of which
+      matches any of the given filters;
+      Calling <code class="code">set_receive_filter s []</code> -- with an empty filter list -- will
+      filter out all incoming messages!
+      The original socket is modified and returned for convenience.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALset_rtr">set_rtr</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">set_rtr frame</code> returns a new frame with the
+      <i>remote transmission request</i> flag set.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALset_sff">set_sff</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">set_sff frame</code> returns a new frame with the <i>standard frame format</i>
+      flag set.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALset_timestamp">set_timestamp</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">set_timestamp frame timestamp</code> returns a new frame with the timestamp
+      set to <code class="code">timestamp</code>.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Mask.html#VALsff">sff</a> [<a href="Socketcan.Mask.html">Socketcan.Mask</a>]</td>
+<td><div class="info">
+This is the bitmask for a <i>standard frame format</i> CAN identifier with
+      11 bit.
+</div>
+</td></tr>
+<tr><td align="left"><br>T</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALtimestamp">timestamp</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">timestamp frame</code> returns the timestamp of the frame <code class="code">frame</code>.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Mask.html#VALto_int">to_int</a> [<a href="Socketcan.Mask.html">Socketcan.Mask</a>]</td>
+<td><div class="info">
+Get the mask value as integer.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Id.html#VALto_int">to_int</a> [<a href="Socketcan.Id.html">Socketcan.Id</a>]</td>
+<td><div class="info">
+Get the 11 bit (sff) or 29 bit (eff) CAN identifier as integer.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALto_string">to_string</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">to_string f</code> returns a human-readable string representation of the frame
+      <code class="code">f</code>.
+</div>
+</td></tr>
+<tr><td align="left"><br>U</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALunset_error">unset_error</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">unset_error frame</code> returns a new frame with the <i>error message</i>
+      flag removed.
+</div>
+</td></tr>
+<tr><td><a href="Socketcan.Frame.html#VALunset_rtr">unset_rtr</a> [<a href="Socketcan.Frame.html">Socketcan.Frame</a>]</td>
+<td><div class="info">
+<code class="code">unset_rtr frame</code> returns a new frame with the
+      <i>remote transmission request</i> flag removed.
+</div>
+</td></tr>
+<tr><td align="left"><br>W</td></tr>
+<tr><td><a href="Socketcan.BCM.html#VALwrite">write</a> [<a href="Socketcan.BCM.html">Socketcan.BCM</a>]</td>
+<td><div class="info">
+<code class="code">write socket ops flags (x, t1, t2, id) frames</code> writes the
+      configuration to the broadcast socket
+</div>
+</td></tr>
+</table>
+</body>
+</html>

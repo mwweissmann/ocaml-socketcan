@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Socketcan.Mask.html">
+<link rel="next" href="Socketcan.Socket.html">
+<link rel="Up" href="Socketcan.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Socketcan" rel="Chapter" href="Socketcan.html"><title>Socketcan.Filter</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Socketcan.Mask.html" title="Socketcan.Mask">Previous</a>
+&nbsp;<a class="up" href="Socketcan.html" title="Socketcan">Up</a>
+&nbsp;<a class="post" href="Socketcan.Socket.html" title="Socketcan.Socket">Next</a>
+</div>
+<h1>Module <a href="type_Socketcan.Filter.html">Socketcan.Filter</a></h1>
+
+<pre><span class="keyword">module</span> Filter: <code class="code">sig</code> <a href="Socketcan.Filter.html">..</a> <code class="code">end</code></pre><div class="info module top">
+Filters for incoming data<br>
+</div>
+<hr width="100%">
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
+<div class="info ">
+A CAN filter<br>
+</div>
+
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?error_frames:[ `Also | `Exclusive | `No ] -><br>       ?remote_frames:[ `Also | `Exclusive | `No ] -><br>       ?extended_frames:[ `Also | `Exclusive | `No ] -><br>       ?mask:<a href="Socketcan.Mask.html#TYPEt">Socketcan.Mask.t</a> -> <a href="Socketcan.Id.html#TYPEt">Socketcan.Id.t</a> -> <a href="Socketcan.Filter.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">create ~mask:m id</code> creates a new receive filter that matches can-ids for
+      which <code class="code">received_id &amp; mask = id &amp; mask</code>; the default value for <code class="code">can_mask</code>
+      is <code class="code">eff_mask</code>.
+      By default <code class="code">extended_frames</code> is <code class="code">`Also</code>, <code class="code">error_frames</code> is <code class="code">`No</code> and
+      <code class="code">remote_frames</code> is <code class="code">`No</code>.<br>
+</div>
+</body></html>

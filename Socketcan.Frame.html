@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Socketcan.Id.html">
+<link rel="next" href="Socketcan.Mask.html">
+<link rel="Up" href="Socketcan.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Socketcan" rel="Chapter" href="Socketcan.html"><title>Socketcan.Frame</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Socketcan.Id.html" title="Socketcan.Id">Previous</a>
+&nbsp;<a class="up" href="Socketcan.html" title="Socketcan">Up</a>
+&nbsp;<a class="post" href="Socketcan.Mask.html" title="Socketcan.Mask">Next</a>
+</div>
+<h1>Module <a href="type_Socketcan.Frame.html">Socketcan.Frame</a></h1>
+
+<pre><span class="keyword">module</span> Frame: <code class="code">sig</code> <a href="Socketcan.Frame.html">..</a> <code class="code">end</code></pre><div class="info module top">
+CAN frames<br>
+</div>
+<hr width="100%">
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
+<div class="info ">
+A CAN frame<br>
+</div>
+
+
+<pre><span id="VALmax_dlen"><span class="keyword">val</span> max_dlen</span> : <code class="type">int</code></pre><div class="info ">
+The maximum payload length in bytes of a CAN frame<br>
+</div>
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">Socketcan.Id.t</a> -><br>       ?rtr:bool -><br>       ?error:bool -><br>       ?timestamp:Posix_time.Timespec.t -><br>       Bytes.t -> (<a href="Socketcan.Frame.html#TYPEt">t</a>, [> `Exceeded_payload_size ]) Result.result</code></pre><div class="info ">
+<code class="code">create i data</code> creates a new CAN frame with CAN-id <code class="code">i</code> and payload
+      <code class="code">data</code>; the payload size must not exceed <code class="code">max_dlen</code> bytes else
+      <code class="code">Result.Error</code> is returned.
+      The <i>extended frame format</i> flag ist set, if the supplied CAN id <code class="code">i</code> is
+      an CAN 2.0B identifier (<i>iff</i> <code class="code">Id.is_eff i = true</code>).
+      The <i>remote transmission request flag</i> and <i>error frame flag</i> are set
+      if <code class="code">rtr</code> and <code class="code">error</code> are set to <code class="code">true</code> respectively.
+      The default timestamp is <i>0 sec, 0 nsec</i>.<br>
+</div>
+
+<pre><span id="VALcreate_exn"><span class="keyword">val</span> create_exn</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">Socketcan.Id.t</a> -><br>       ?rtr:bool -><br>       ?error:bool -><br>       ?timestamp:Posix_time.Timespec.t -> Bytes.t -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">create_exn i data</code> is identical to <code class="code">create i data</code> but will raise
+      <code class="code">Invalid_argument</code> in case the payload size is exceeded.<br>
+</div>
+
+<pre><span id="VALcreate_data"><span class="keyword">val</span> create_data</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">Socketcan.Id.t</a> -><br>       Bytes.t -> (<a href="Socketcan.Frame.html#TYPEt">t</a>, [> `Exceeded_payload_size ]) Result.result</code></pre><div class="info ">
+<code class="code">create i p</code> creates a new CAN data frame with CAN-id <code class="code">i</code> and payload <code class="code">p</code>;
+      the payload size must not exceed <code class="code">max_dlen</code> bytes else <code class="code">Result.Error</code> is
+      returned.<br>
+</div>
+
+<pre><span id="VALcreate_data_exn"><span class="keyword">val</span> create_data_exn</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">Socketcan.Id.t</a> -> Bytes.t -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">create_exn i p</code> is identical to <code class="code">create i p</code> but will raise
+      <code class="code">Invalid_argument</code> in case the payload size is exceeded.<br>
+</div>
+
+<pre><span id="VALcreate_rtr"><span class="keyword">val</span> create_rtr</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">Socketcan.Id.t</a> -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">create_rtr i</code> creates a new <i>remote transmission request</i> CAN frame
+      with CAN-id <code class="code">i</code>. The frame does not contain any payload.<br>
+</div>
+
+<pre><span id="VALid"><span class="keyword">val</span> id</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> <a href="Socketcan.Id.html#TYPEt">Socketcan.Id.t</a></code></pre><div class="info ">
+<code class="code">id f</code> returns the CAN-id of the frame <code class="code">f</code>.<br>
+</div>
+
+<pre><span id="VALdata"><span class="keyword">val</span> data</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> Bytes.t</code></pre><div class="info ">
+<code class="code">data f</code> returns the payload of the frame <code class="code">f</code><br>
+</div>
+
+<pre><span id="VALset_data"><span class="keyword">val</span> set_data</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -><br>       Bytes.t -> (<a href="Socketcan.Frame.html#TYPEt">t</a>, [> `Exceeded_payload_size ]) Result.result</code></pre><div class="info ">
+<code class="code">set_data f d</code> returns a new frame with the payload set to <code class="code">d</code>. All other
+      properties of the new frame are identical to <code class="code">f</code>.<br>
+</div>
+
+<pre><span id="VALtimestamp"><span class="keyword">val</span> timestamp</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> Posix_time.Timespec.t</code></pre><div class="info ">
+<code class="code">timestamp frame</code> returns the timestamp of the frame <code class="code">frame</code>.<br>
+</div>
+
+<pre><span id="VALset_timestamp"><span class="keyword">val</span> set_timestamp</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> Posix_time.Timespec.t -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">set_timestamp frame timestamp</code> returns a new frame with the timestamp
+      set to <code class="code">timestamp</code>.<br>
+</div>
+
+<pre><span id="VALis_rtr"><span class="keyword">val</span> is_rtr</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">is_rtr frame</code> returns whether the frame <code class="code">frame</code> is a
+      <i>remote transmission request</i> frame.<br>
+</div>
+
+<pre><span id="VALset_rtr"><span class="keyword">val</span> set_rtr</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">set_rtr frame</code> returns a new frame with the
+      <i>remote transmission request</i> flag set.<br>
+</div>
+
+<pre><span id="VALunset_rtr"><span class="keyword">val</span> unset_rtr</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">unset_rtr frame</code> returns a new frame with the
+      <i>remote transmission request</i> flag removed.<br>
+</div>
+
+<pre><span id="VALis_error"><span class="keyword">val</span> is_error</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">is_error frame</code> returns whether the frame <code class="code">frame</code> is an error message
+      frame<br>
+</div>
+
+<pre><span id="VALset_error"><span class="keyword">val</span> set_error</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">set_error frame</code> returns a new frame with the <i>error message</i>
+      flag set.<br>
+</div>
+
+<pre><span id="VALunset_error"><span class="keyword">val</span> unset_error</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">unset_error frame</code> returns a new frame with the <i>error message</i>
+      flag removed.<br>
+</div>
+
+<pre><span id="VALis_sff"><span class="keyword">val</span> is_sff</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">is_sff frame</code> returns whether the frame <code class="code">frame</code> is a <i>standard frame
+      format</i> frame.<br>
+</div>
+
+<pre><span id="VALset_sff"><span class="keyword">val</span> set_sff</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">set_sff frame</code> returns a new frame with the <i>standard frame format</i>
+      flag set. The CAN identifier will be masked down to <code class="code">sff_mask</code>.<br>
+</div>
+
+<pre><span id="VALis_eff"><span class="keyword">val</span> is_eff</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">is_eff frame</code> returns whether the frame <code class="code">frame</code> is an <i>extended frame
+      format</i> frame.
+      This is the negation of <code class="code">is_sff</code>: <code class="code">is_eff x = not is_sff x</code>.<br>
+</div>
+
+<pre><span id="VALset_eff"><span class="keyword">val</span> set_eff</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> <a href="Socketcan.Frame.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">set_eff frame</code> returns a new frame with the <i>extended frame format</i>
+      flag set.<br>
+</div>
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> string</code></pre><div class="info ">
+<code class="code">to_string f</code> returns a human-readable string representation of the frame
+      <code class="code">f</code>.<br>
+</div>
+
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type"><a href="Socketcan.Frame.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+<code class="code">print f</code> prints the frame f to <code class="code">stdout</code> in a human-readable fashion.<br>
+</div>
+</body></html>

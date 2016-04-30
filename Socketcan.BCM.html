@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Socketcan.Socket.html">
+<link rel="Up" href="Socketcan.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Socketcan" rel="Chapter" href="Socketcan.html"><title>Socketcan.BCM</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Socketcan.Socket.html" title="Socketcan.Socket">Previous</a>
+&nbsp;<a class="up" href="Socketcan.html" title="Socketcan">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Socketcan.BCM.html">Socketcan.BCM</a></h1>
+
+<pre><span class="keyword">module</span> BCM: <code class="code">sig</code> <a href="Socketcan.BCM.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
+<div class="info ">
+CAN broadcast manager<br>
+</div>
+
+
+<pre><code><span id="TYPEopcode"><span class="keyword">type</span> <code class="type"></code>opcode</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.TX_SETUP"><span class="constructor">TX_SETUP</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.TX_DELETE"><span class="constructor">TX_DELETE</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.TX_READ"><span class="constructor">TX_READ</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.TX_SEND"><span class="constructor">TX_SEND</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.TX_STATUS"><span class="constructor">TX_STATUS</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.TX_EXPIRED"><span class="constructor">TX_EXPIRED</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.RX_SETUP"><span class="constructor">RX_SETUP</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.RX_DELETE"><span class="constructor">RX_DELETE</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.RX_READ"><span class="constructor">RX_READ</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.RX_STATUS"><span class="constructor">RX_STATUS</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.RX_TIMEOUT"><span class="constructor">RX_TIMEOUT</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopcode.RX_CHANGED"><span class="constructor">RX_CHANGED</span></span></code></td>
+
+</tr></table>
+
+
+
+<pre><code><span id="TYPEflag"><span class="keyword">type</span> <code class="type"></code>flag</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.SETTIMER"><span class="constructor">SETTIMER</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.STARTTIMER"><span class="constructor">STARTTIMER</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.TX_COUNTEVT"><span class="constructor">TX_COUNTEVT</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.TX_ANNOUNCE"><span class="constructor">TX_ANNOUNCE</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.TX_CP_CAN_ID"><span class="constructor">TX_CP_CAN_ID</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.RX_FILTER_ID"><span class="constructor">RX_FILTER_ID</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.RX_CHECK_DLC"><span class="constructor">RX_CHECK_DLC</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.RX_NO_AUTOTIMER"><span class="constructor">RX_NO_AUTOTIMER</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.RX_ANNOUNCE_RESUME"><span class="constructor">RX_ANNOUNCE_RESUME</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.TX_RESET_MULTI_IDX"><span class="constructor">TX_RESET_MULTI_IDX</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTflag.RX_RTR_FRAME"><span class="constructor">RX_RTR_FRAME</span></span></code></td>
+
+</tr></table>
+
+
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">string -> (<a href="Socketcan.BCM.html#TYPEt">t</a>, [> `EUnix of Unix.error ]) Result.result</code></pre><div class="info ">
+<code class="code">create s</code> opens the can-interface named <code class="code">s</code> (e.g. "can0")<br>
+</div>
+
+<pre><span id="VALclose"><span class="keyword">val</span> close</span> : <code class="type"><a href="Socketcan.BCM.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+<code class="code">close s</code> closes the socket <code class="code">s</code>.<br>
+</div>
+
+<pre><span id="TYPEtimer"><span class="keyword">type</span> <code class="type"></code>timer</span> = <code class="type">Posix_time.Timeval.t</code> </pre>
+<div class="info ">
+time value with seconds <code class="code">tv_sec</code> and microseconds <code class="code">tv_usec</code><br>
+</div>
+
+
+<pre><span id="VALwrite"><span class="keyword">val</span> write</span> : <code class="type"><a href="Socketcan.BCM.html#TYPEt">t</a> -><br>       <a href="Socketcan.BCM.html#TYPEopcode">opcode</a> list -><br>       <a href="Socketcan.BCM.html#TYPEflag">flag</a> list -><br>       int * <a href="Socketcan.BCM.html#TYPEtimer">timer</a> * <a href="Socketcan.BCM.html#TYPEtimer">timer</a> * <a href="Socketcan.Id.html#TYPEt">Socketcan.Id.t</a> -><br>       <a href="Socketcan.Frame.html#TYPEt">Socketcan.Frame.t</a> list -> (unit, [> `EUnix of Unix.error ]) Result.result</code></pre><div class="info ">
+<code class="code">write socket ops flags (x, t1, t2, id) frames</code> writes the
+      configuration to the broadcast socket<br>
+</div>
+
+<pre><span id="VALfd"><span class="keyword">val</span> fd</span> : <code class="type"><a href="Socketcan.BCM.html#TYPEt">t</a> -> Unix.file_descr</code></pre><div class="info ">
+<code class="code">fs s</code> will return a Unix-file-descriptor of the socket <code class="code">s</code>;
+      this file-descriptor can then be used with e.g. <code class="code">Unix.select</code>.<br>
+</div>
+</body></html>

@@ -1,0 +1,41 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Socketcan" rel="Chapter" href="Socketcan.html"><title>Socketcan.Socket</title>
+</head>
+<body>
+<code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;error_flag&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">CAN_ERR_TX_TIMEOUT</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">CAN_ERR_LOSTARB</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">CAN_ERR_CRTL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">CAN_ERR_PROT</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">CAN_ERR_TRX</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">CAN_ERR_ACK</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">CAN_ERR_BUSOFF</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">CAN_ERR_BUSERROR</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">CAN_ERR_RESTARTED</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.t,&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">EUnix</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Unix</span>.error&nbsp;])&nbsp;<span class="constructor">Result</span>.result<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close&nbsp;:&nbsp;<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_receive_filter&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Socketcan</span>.<span class="constructor">Filter</span>.t&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.t,&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">EUnix</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Unix</span>.error&nbsp;])&nbsp;<span class="constructor">Result</span>.result<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_error_flags&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.error_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.t,&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">EUnix</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Unix</span>.error&nbsp;])&nbsp;<span class="constructor">Result</span>.result<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;receive&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Socketcan</span>.<span class="constructor">Frame</span>.t,&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">EUnix</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Unix</span>.error&nbsp;])&nbsp;<span class="constructor">Result</span>.result<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;send&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Socketcan</span>.<span class="constructor">Frame</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int,&nbsp;[&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">EUnix</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Unix</span>.error&nbsp;])&nbsp;<span class="constructor">Result</span>.result<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;fd&nbsp;:&nbsp;<span class="constructor">Socketcan</span>.<span class="constructor">Socket</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Unix</span>.file_descr<br>
+<span class="keyword">end</span></code></body></html>

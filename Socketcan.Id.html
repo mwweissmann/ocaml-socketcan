@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="next" href="Socketcan.Frame.html">
+<link rel="Up" href="Socketcan.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Socketcan" rel="Chapter" href="Socketcan.html"><title>Socketcan.Id</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="Socketcan.html" title="Socketcan">Up</a>
+&nbsp;<a class="post" href="Socketcan.Frame.html" title="Socketcan.Frame">Next</a>
+</div>
+<h1>Module <a href="type_Socketcan.Id.html">Socketcan.Id</a></h1>
+
+<pre><span class="keyword">module</span> Id: <code class="code">sig</code> <a href="Socketcan.Id.html">..</a> <code class="code">end</code></pre><div class="info module top">
+CAN identifiers<br>
+</div>
+<hr width="100%">
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
+<div class="info ">
+A CAN identifier of up to 29 bit;
+      it includes the property of either being a CAN2.0A (sff) or CAN2.0B (eff)
+      identifier.<br>
+</div>
+
+
+<pre><span id="VALcreate_sff"><span class="keyword">val</span> create_sff</span> : <code class="type">int -> <a href="Socketcan.Id.html#TYPEt">t</a></code></pre><div class="info ">
+Create a valid CAN 2.0A <i>standard frame format</i> identifier with 11 bit
+      from an integer value.
+      Masks all bits that are not in <code class="code">sff_mask</code>.<br>
+</div>
+
+<pre><span id="VALcreate_eff"><span class="keyword">val</span> create_eff</span> : <code class="type">int -> <a href="Socketcan.Id.html#TYPEt">t</a></code></pre><div class="info ">
+Create a valid CAN 2.0B <i>extended frame format</i> identifier with 29 bit
+      from an integer value.
+      Masks all bits that are not in <code class="code">eff_mask</code>.<br>
+</div>
+
+<pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+Get the 11 bit (sff) or 29 bit (eff) CAN identifier as integer.<br>
+</div>
+
+<pre><span id="VALmake_sff"><span class="keyword">val</span> make_sff</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">t</a> -> <a href="Socketcan.Id.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">make_sff id</code> transforms a CAN id making it a <i>standard frame format</i>
+      identifier. If <code class="code">id</code> already is a CAN2.0A identifier, this is a no-op.<br>
+</div>
+
+<pre><span id="VALis_sff"><span class="keyword">val</span> is_sff</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">is_sff id</code> returns whether the id <code class="code">id</code> is a <i>standard frame format</i>
+      identifier.<br>
+</div>
+
+<pre><span id="VALmake_eff"><span class="keyword">val</span> make_eff</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">t</a> -> <a href="Socketcan.Id.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">make_eff id</code> transforms a CAN id making it an <i>extended frame format</i>
+      identifier. If <code class="code">id</code> already is a CAN2.0B identifier, this is a no-op.<br>
+</div>
+
+<pre><span id="VALis_eff"><span class="keyword">val</span> is_eff</span> : <code class="type"><a href="Socketcan.Id.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">is_eff id</code> returns whether the id <code class="code">id</code> is an <i>extended frame format</i>
+      identifier.
+      This is the negation of <code class="code">is_sff</code>: <code class="code">is_eff x = not is_sff x</code>.<br>
+</div>
+</body></html>

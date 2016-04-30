@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Socketcan.Filter.html">
+<link rel="next" href="Socketcan.BCM.html">
+<link rel="Up" href="Socketcan.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Socketcan" rel="Chapter" href="Socketcan.html"><title>Socketcan.Socket</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Socketcan.Filter.html" title="Socketcan.Filter">Previous</a>
+&nbsp;<a class="up" href="Socketcan.html" title="Socketcan">Up</a>
+&nbsp;<a class="post" href="Socketcan.BCM.html" title="Socketcan.BCM">Next</a>
+</div>
+<h1>Module <a href="type_Socketcan.Socket.html">Socketcan.Socket</a></h1>
+
+<pre><span class="keyword">module</span> Socket: <code class="code">sig</code> <a href="Socketcan.Socket.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
+<div class="info ">
+A CAN socket<br>
+</div>
+
+
+<pre><code><span id="TYPEerror_flag"><span class="keyword">type</span> <code class="type"></code>error_flag</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTerror_flag.CAN_ERR_TX_TIMEOUT"><span class="constructor">CAN_ERR_TX_TIMEOUT</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTerror_flag.CAN_ERR_LOSTARB"><span class="constructor">CAN_ERR_LOSTARB</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTerror_flag.CAN_ERR_CRTL"><span class="constructor">CAN_ERR_CRTL</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTerror_flag.CAN_ERR_PROT"><span class="constructor">CAN_ERR_PROT</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTerror_flag.CAN_ERR_TRX"><span class="constructor">CAN_ERR_TRX</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTerror_flag.CAN_ERR_ACK"><span class="constructor">CAN_ERR_ACK</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTerror_flag.CAN_ERR_BUSOFF"><span class="constructor">CAN_ERR_BUSOFF</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTerror_flag.CAN_ERR_BUSERROR"><span class="constructor">CAN_ERR_BUSERROR</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTerror_flag.CAN_ERR_RESTARTED"><span class="constructor">CAN_ERR_RESTARTED</span></span></code></td>
+
+</tr></table>
+
+<div class="info ">
+error flags for configuring a CAN socket<br>
+</div>
+
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">string -> (<a href="Socketcan.Socket.html#TYPEt">t</a>, [> `EUnix of Unix.error ]) Result.result</code></pre><div class="info ">
+<code class="code">create s</code> opens the can-interface named <code class="code">s</code> (e.g. "can0")<br>
+</div>
+
+<pre><span id="VALclose"><span class="keyword">val</span> close</span> : <code class="type"><a href="Socketcan.Socket.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+<code class="code">close s</code> closes the socket <code class="code">s</code>.<br>
+</div>
+
+<pre><span id="VALset_receive_filter"><span class="keyword">val</span> set_receive_filter</span> : <code class="type"><a href="Socketcan.Socket.html#TYPEt">t</a> -><br>       <a href="Socketcan.Filter.html#TYPEt">Socketcan.Filter.t</a> list -><br>       (<a href="Socketcan.Socket.html#TYPEt">t</a>, [> `EUnix of Unix.error ]) Result.result</code></pre><div class="info ">
+<code class="code">set_receive_filter s fs</code> adds the list of input filters <code class="code">fs</code> to the
+      socket <code class="code">s</code>; the socket will then only receive frames the can-id of which
+      matches any of the given filters;
+      Calling <code class="code">set_receive_filter s []</code> -- with an empty filter list -- will
+      filter out all incoming messages!
+      The original socket is modified and returned for convenience.<br>
+</div>
+
+<pre><span id="VALset_error_flags"><span class="keyword">val</span> set_error_flags</span> : <code class="type"><a href="Socketcan.Socket.html#TYPEt">t</a> -><br>       <a href="Socketcan.Socket.html#TYPEerror_flag">error_flag</a> list -><br>       (<a href="Socketcan.Socket.html#TYPEt">t</a>, [> `EUnix of Unix.error ]) Result.result</code></pre><div class="info ">
+<code class="code">set_error_flags s es</code> will alter the socket <code class="code">s</code> such that all errors as
+      selected in <code class="code">es</code> will now be sent as CAN frames to the socket.
+      The original socket is modified and returned for convenience.<br>
+</div>
+
+<pre><span id="VALreceive"><span class="keyword">val</span> receive</span> : <code class="type"><a href="Socketcan.Socket.html#TYPEt">t</a> -><br>       (<a href="Socketcan.Frame.html#TYPEt">Socketcan.Frame.t</a>, [> `EUnix of Unix.error ]) Result.result</code></pre><div class="info ">
+<code class="code">receive s</code> will blocking wait for the next frame on the socket <code class="code">s</code>;
+      the returned frame is a copy and will not be altered by subsequent calls
+      to <code class="code">receive</code>.
+      The timestamp of the frame is set to the (not necessarily monotonic)
+      system time indicating the time of arrival of the frame.<br>
+</div>
+
+<pre><span id="VALsend"><span class="keyword">val</span> send</span> : <code class="type"><a href="Socketcan.Socket.html#TYPEt">t</a> -><br>       <a href="Socketcan.Frame.html#TYPEt">Socketcan.Frame.t</a> -> (int, [> `EUnix of Unix.error ]) Result.result</code></pre><div class="info ">
+<code class="code">send s f</code> will send the frame <code class="code">f</code> on the socket <code class="code">s</code>; this call will block
+      if the interface is not ready.<br>
+</div>
+
+<pre><span id="VALfd"><span class="keyword">val</span> fd</span> : <code class="type"><a href="Socketcan.Socket.html#TYPEt">t</a> -> Unix.file_descr</code></pre><div class="info ">
+<code class="code">fs s</code> will return a Unix-file-descriptor of the socket <code class="code">s</code>;
+      this file-descriptor can then be used with e.g. <code class="code">Unix.select</code>.<br>
+</div>
+</body></html>
