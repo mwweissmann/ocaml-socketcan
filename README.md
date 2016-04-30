@@ -9,6 +9,9 @@ To start programming, check the tools:
 
 The full interface can be seen in the [API documentation](http://mwweissmann.github.io/ocaml-socketcan/).
 
+OCaml-SocketCAN requires the [OCaml posix-time](https://github.com/mwweissmann/ocaml-posix-time) library.
+If you install via [OPAM](https://opam.ocaml.org/) or your package manager the requirements should be installed automatically.
+
 The source code of time is available under the MIT license.
 
 This library is originally written by [Markus Weissmann](http://www.mweissmann.de/)
