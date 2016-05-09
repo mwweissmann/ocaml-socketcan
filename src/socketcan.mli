@@ -22,11 +22,12 @@ THE SOFTWARE.
 
 (** CAN bindings to the Linux SocketCAN interface *)
 
-(** CAN identifiers *)
+(** CAN identifiers of either standard (11 Bit) or extended frame format
+    (29 Bit) size *)
 module Id : sig
   (** A CAN identifier of up to 29 bit;
-      it includes the property of either being a CAN2.0A (sff) or CAN2.0B (eff)
-      identifier. *)
+      it includes the property of it either being a CAN 2.0A (sff, 11 Bit)
+      or CAN 2.0B (eff, 29 Bit) identifier. *)
   type t
 
   (** Create a valid CAN 2.0A {i standard frame format} identifier with 11 bit
@@ -60,7 +61,8 @@ module Id : sig
   val is_eff : t -> bool
 end
 
-(** CAN frames *)
+(** CAN frames representing CAN message frames including CAN identifier,
+    payload and time of arrival. *)
 module Frame : sig
   (** A CAN frame *)
   type t
@@ -165,6 +167,7 @@ module Frame : sig
   val print : t -> unit
 end
 
+(** CAN identifier masks for use with filters. *)
 module Mask : sig
   (** A CAN identifier mask of up to 29 bit; *)
   type t
@@ -189,7 +192,7 @@ module Mask : sig
   val eff : t
 end
 
-(** Filters for incoming data *)
+(** Filters for incoming data that can be applied to a socket. *)
 module Filter : sig
   (** A CAN filter *)
   type t
@@ -206,8 +209,10 @@ module Filter : sig
     ?mask:Mask.t -> Id.t -> t
 end
 
+(** A CAN socket: This is a file descriptor on which CAN message frames can be
+    sent and received. *)
 module Socket : sig
-  (** A CAN socket *)
+  (** A CAN socket for sending and receiving CAN message frames. *)
   type t
 
   (** error flags for configuring a CAN socket *)
@@ -259,6 +264,9 @@ module Socket : sig
   val fd : t -> Unix.file_descr
 end
 
+(** The SocketCAN BroadCast Manager (BCM) allows to send CAN message frames
+    from kernel space; the kernel e.g. can then send periodic messages without
+    having to be triggered by user space. *)
 module BCM : sig
   (** CAN broadcast manager *)
   type t
