@@ -152,8 +152,8 @@ end
 module Filter = struct
   type t = { can_id : Id.t; can_mask : Id.t }
 
-  let create ?error_frames:(err=`No) ?remote_frames:(rtr=`No)
-      ?extended_frames:(eff=`Also) ?mask:(m=eff_mask) id =
+  let create ?remote_frames:(rtr=`No) ?extended_frames:(eff=`Also)
+      ?mask:(m=eff_mask) id =
     let bits s = function
       | `No -> Int32.zero, s
       | `Exclusive -> s, s
@@ -161,16 +161,15 @@ module Filter = struct
     in
     let eff_id, eff_mask = bits eff_flag eff in
     let rtr_id, rtr_mask = bits rtr_flag rtr in
-    let err_id, err_mask = bits err_flag err in
 
     let effbit_mask = Int32.lognot eff_flag in
     let can_id =
-      Int32.logor err_id (Int32.logor rtr_id (Int32.logor eff_id (Int32.logand effbit_mask (Int32.logand id eff_mask))))
+      Int32.logor rtr_id (Int32.logor eff_id (Int32.logand effbit_mask (Int32.logand id Mask.eff)))
     in
     let can_mask =
-      Int32.logor err_mask (Int32.logor rtr_mask (Int32.logor eff_mask (Int32.logand effbit_mask (Int32.logand m eff_mask))))
+      Int32.logor rtr_mask (Int32.logor eff_mask (Int32.logand effbit_mask (Int32.logand m Mask.eff)))
     in
-    Printf.printf "filter: id=0x%lX, mask=0x%lX\n%!" can_id can_mask;
+    (* Printf.printf "filter: id=0x%lX, mask=0x%lX\n%!" can_id can_mask; *)
     { can_id; can_mask }
 end
 

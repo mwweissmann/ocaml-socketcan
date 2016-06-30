@@ -203,7 +203,6 @@ module Filter : sig
       By default [extended_frames] is [`Also], [error_frames] is [`No] and
       [remote_frames] is [`No]. *)
   val create :
-    ?error_frames:[ `Also | `Exclusive | `No ] ->
     ?remote_frames:[ `Also | `Exclusive | `No ] ->
     ?extended_frames:[ `Also | `Exclusive | `No ] ->
     ?mask:Mask.t -> Id.t -> t

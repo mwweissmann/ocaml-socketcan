@@ -13,7 +13,7 @@ let _ =
       let () = print_endline "set_receive_filter" in
       let fd = get_ok (Socketcan.Socket.set_receive_filter fd
         [
-          Socketcan.Filter.create ~error_frames:`Also ~remote_frames:`Also ~mask:Socketcan.Mask.sff (Socketcan.Id.create_sff 815);
+          Socketcan.Filter.create ~remote_frames:`Also ~mask:Socketcan.Mask.sff (Socketcan.Id.create_sff 815);
           Socketcan.Filter.create ~mask:Socketcan.Mask.sff (Socketcan.Id.create_sff 42);
         ])
       in
