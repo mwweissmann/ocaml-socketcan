@@ -143,6 +143,7 @@ CAMLprim value bcm_write(value socket, value opcodes, value flags, value options
   struct bcm_msg_head * msg;
   uint32_t nframes, i;
   size_t msg_size, rc, dlc;
+  struct timeval t1, t2;
 
   // compute List.length of frames list
   for (nframes = 0, tail = frames; Val_emptylist != tail; nframes++, tail = Field(tail, 1)) {}
@@ -155,8 +156,15 @@ CAMLprim value bcm_write(value socket, value opcodes, value flags, value options
   msg->opcode = convert_flag_list(opcodes, bcm_opcode_table);
   msg->flags = convert_flag_list(flags, bcm_flag_table);
   msg->count = Int_val(Field(options, 0));
-  msg->ival1 = timeval_val(Field(options, 1));
-  msg->ival2 = timeval_val(Field(options, 2));
+
+  t1 = timeval_val(Field(options, 1));
+  msg->ival1.tv_sec = t1.tv_sec;
+  msg->ival1.tv_usec = t1.tv_usec;
+
+  t2 = timeval_val(Field(options, 2));
+  msg->ival2.tv_sec = t2.tv_sec;
+  msg->ival2.tv_usec = t2.tv_usec;
+
   msg->can_id = Int_val(Field(options, 3));
   msg->nframes = nframes;
 
