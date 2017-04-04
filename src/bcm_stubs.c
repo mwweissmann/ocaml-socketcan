@@ -103,7 +103,7 @@ ERROR_CLEAN:
   Store_field(result, 0, perrno);
 
 END:
-  CAMLreturn(Val_int(fd));
+  CAMLreturn(result);
 }
 
 static int bcm_opcode_table[12] = {
@@ -165,7 +165,7 @@ CAMLprim value bcm_write(value socket, value opcodes, value flags, value options
   msg->ival2.tv_sec = t2.tv_sec;
   msg->ival2.tv_usec = t2.tv_usec;
 
-  msg->can_id = Int_val(Field(options, 3));
+  msg->can_id = Int32_val(Field(options, 3));
   msg->nframes = nframes;
 
   // copy the can-frames from the frames list to bcm_msg_head
@@ -173,7 +173,7 @@ CAMLprim value bcm_write(value socket, value opcodes, value flags, value options
     assert(i < nframes);
     head = Field(tail, 0);
 
-    msg->frames[i].can_id = Int_val(Field(head, 0));
+    msg->frames[i].can_id = Int32_val(Field(head, 0));
 
     data = Field(head, 1);
     dlc = caml_string_length(data);
