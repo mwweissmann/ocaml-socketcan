@@ -91,7 +91,7 @@ CAMLprim value can_open(value ifname) {
   caml_acquire_runtime_system();
 
   result = caml_alloc(1, 0); // Result.Ok
-  Store_field(result, 0, Val_int(fd));
+  Store_field(result, 0, Val_long(fd));
   goto END;
 
 ERROR:
@@ -129,7 +129,7 @@ CAMLprim value can_error_flags(value socket, value eflags) {
   can_err_mask_t err_mask;
   int fd, rc;
 
-  fd = Int_val(socket);
+  fd = Long_val(socket);
   err_mask = convert_flag_list(eflags, err_flag_table);
 
   caml_release_runtime_system();
@@ -164,7 +164,7 @@ CAMLprim value can_receive_filter(value socket, value flist) {
   struct can_filter * rfilter;
   int rc, fd;
 
-  fd = Int_val(socket);
+  fd = Long_val(socket);
 
   // compute List.length
   i = 0;
@@ -232,7 +232,7 @@ CAMLprim value can_receive(value socket) {
 
   memset(&msg, 0, sizeof(msg));
   memset(&iov, 0, sizeof(iov));
-  fd = Int_val(socket);
+  fd = Long_val(socket);
 
   caml_release_runtime_system();
 
@@ -296,7 +296,7 @@ value can_send(value socket, value frame) {
   struct can_frame buffer;
   int fd;
 
-  fd = Int_val(socket);
+  fd = Long_val(socket);
   data = Field(frame, 1);
   dlc = caml_string_length(data);
 
@@ -320,7 +320,7 @@ value can_send(value socket, value frame) {
     Store_field(result, 0, perrno);
   } else {
     result = caml_alloc(1, 0); // Result.Ok
-    Store_field(result, 0, Val_int(len));
+    Store_field(result, 0, Val_long(len));
   }
 
   CAMLreturn(result);

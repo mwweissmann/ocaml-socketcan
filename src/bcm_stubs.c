@@ -87,7 +87,7 @@ CAMLprim value bcm_open(value ifname) {
   caml_acquire_runtime_system();
 
   result = caml_alloc(1, 0); // Result.Ok
-  Store_field(result, 0, Val_int(fd));
+  Store_field(result, 0, Val_long(fd));
   goto END;
 
 ERROR:
@@ -151,7 +151,7 @@ CAMLprim value bcm_write(value socket, value opcodes, value flags, value options
   msg_size = sizeof(struct bcm_msg_head) + nframes * sizeof(struct can_frame);
   msg = alloca(msg_size);
 
-  fd = Int_val(socket);
+  fd = Long_val(socket);
 
   msg->opcode = convert_flag_list(opcodes, bcm_opcode_table);
   msg->flags = convert_flag_list(flags, bcm_flag_table);
@@ -195,8 +195,8 @@ CAMLprim value bcm_write(value socket, value opcodes, value flags, value options
     result = caml_alloc(1, 1); // Result.Error
     Store_field(result, 0, perrno);
   } else {
-    result = caml_alloc(1, 0); // Result.Ok
-    Store_field(result, 0, Val_int(fd));
+    result = caml_alloc(1, 0); // Result.Ok ()
+    Store_field(result, 0, Val_unit);
   }
 
   CAMLreturn(result);
