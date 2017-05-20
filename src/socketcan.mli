@@ -254,9 +254,17 @@ module Socket : sig
       system time indicating the time of arrival of the frame. *)
   val receive : t -> (Frame.t, [>`EUnix of Unix.error]) Result.result
 
+  (** [receive_exn s] works exactly like [receive s] but will raise a
+      [Unix_error] exception in case of an error. *)
+  val receive_exn : t -> Frame.t
+
   (** [send s f] will send the frame [f] on the socket [s]; this call will block
       if the interface is not ready. *)
   val send : t -> Frame.t -> (int, [>`EUnix of Unix.error]) Result.result
+
+  (** [send_exn s f] works exactly like [send s f] but will raise a
+      [Unix_error] exception in case of an error. *)
+  val send_exn : t -> Frame.t -> int
 
   (** [fs s] will return a Unix-file-descriptor of the socket [s];
       this file-descriptor can then be used with e.g. [Unix.select]. *)

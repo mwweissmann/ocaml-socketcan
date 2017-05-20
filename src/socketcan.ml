@@ -110,25 +110,25 @@ module Frame = struct
 
   let set_timestamp frame t = { frame with timestamp = t }
 
-  let is_rtr frame = is_set rtr_flag (id frame)
+  let is_rtr frame = is_set rtr_flag frame.id
 
-  let set_rtr frame = { frame with id = set rtr_flag (id frame) }
+  let set_rtr frame = { frame with id = set rtr_flag frame.id }
 
-  let unset_rtr frame = { frame with id = unset rtr_flag (id frame) }
+  let unset_rtr frame = { frame with id = unset rtr_flag frame.id }
 
-  let is_error frame = is_set err_flag (id frame)
+  let is_error frame = is_set err_flag frame.id
 
-  let set_error frame = { frame with id = set err_flag (id frame) }
+  let set_error frame = { frame with id = set err_flag frame.id }
 
-  let unset_error frame = { frame with id = unset err_flag (id frame) }
+  let unset_error frame = { frame with id = unset err_flag frame.id }
 
-  let is_sff frame = Id.is_sff (id frame)
+  let is_sff frame = Id.is_sff frame.id
 
-  let set_sff frame = { frame with id = Id.make_sff (id frame) }
+  let set_sff frame = { frame with id = Id.make_sff frame.id }
 
-  let is_eff frame = Id.is_eff (id frame)
+  let is_eff frame = Id.is_eff frame.id
 
-  let set_eff frame = { frame with id = Id.make_eff (id frame) }
+  let set_eff frame = { frame with id = Id.make_eff frame.id }
 
   let to_string frame =
     let sec, nsec =
@@ -197,7 +197,17 @@ module Socket = struct
 
   external receive : t -> (Frame.t, [>`EUnix of Unix.error]) Result.result = "can_receive"
 
+  let receive_exn s =
+    match receive s with
+    | Result.Ok f -> f
+    | Result.Error (`EUnix err) -> raise (Unix.Unix_error (err, "recvmsg", ""))
+
   external send : t -> Frame.t -> (int, [>`EUnix of Unix.error]) Result.result = "can_send"
+
+  let send_exn s f =
+    match send s f with
+    | Result.Ok len -> len
+    | Result.Error (`EUnix err) -> raise (Unix.Unix_error (err, "write", ""))
 
   external fd : t -> t = "%identity"
 end
