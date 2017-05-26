@@ -20,6 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 *)
 
+let wrap_unix result function_name =
+  match result with
+  | Result.Ok s -> s
+  | Result.Error (`EUnix err) -> raise (Unix.Unix_error (err, function_name, ""))
+
 let is_set flag v = Int32.logand flag v = flag
 
 let set flag v = Int32.logor flag v
@@ -173,10 +178,8 @@ module Filter = struct
     { can_id; can_mask }
 end
 
-module Socket = struct
-  type t = Unix.file_descr
-
-  type error_flag =
+module Error = struct
+  type t =
     | CAN_ERR_TX_TIMEOUT
     | CAN_ERR_LOSTARB
     | CAN_ERR_CRTL
@@ -187,27 +190,210 @@ module Socket = struct
     | CAN_ERR_BUSERROR
     | CAN_ERR_RESTARTED
 
+  type status =
+    | CAN_ERR_CRTL_RX_OVERFLOW
+    | CAN_ERR_CRTL_TX_OVERFLOW
+    | CAN_ERR_CRTL_RX_WARNING
+    | CAN_ERR_CRTL_TX_WARNING
+    | CAN_ERR_CRTL_RX_PASSIVE
+    | CAN_ERR_CRTL_TX_PASSIVE
+    | CAN_ERR_PROT_BIT
+    | CAN_ERR_PROT_FORM
+    | CAN_ERR_PROT_STUFF
+    | CAN_ERR_PROT_BIT0
+    | CAN_ERR_PROT_BIT1
+    | CAN_ERR_PROT_OVERLOAD
+    | CAN_ERR_PROT_ACTIVE
+    | CAN_ERR_PROT_TX
+    | CAN_ERR_PROT_LOC_SOF
+    | CAN_ERR_PROT_LOC_ID28_21
+    | CAN_ERR_PROT_LOC_ID20_18
+    | CAN_ERR_PROT_LOC_SRTR
+    | CAN_ERR_PROT_LOC_IDE
+    | CAN_ERR_PROT_LOC_ID17_13
+    | CAN_ERR_PROT_LOC_ID12_05
+    | CAN_ERR_PROT_LOC_ID04_00
+    | CAN_ERR_PROT_LOC_RTR
+    | CAN_ERR_PROT_LOC_RES1
+    | CAN_ERR_PROT_LOC_RES0
+    | CAN_ERR_PROT_LOC_DLC
+    | CAN_ERR_PROT_LOC_DATA
+    | CAN_ERR_PROT_LOC_CRC_SEQ
+    | CAN_ERR_PROT_LOC_CRC_DEL
+    | CAN_ERR_PROT_LOC_ACK
+    | CAN_ERR_PROT_LOC_ACK_DEL
+    | CAN_ERR_PROT_LOC_EOF
+    | CAN_ERR_PROT_LOC_INTERM
+    | CAN_ERR_TRX_CANH_NO_WIRE
+    | CAN_ERR_TRX_CANH_SHORT_TO_BAT
+    | CAN_ERR_TRX_CANH_SHORT_TO_VCC
+    | CAN_ERR_TRX_CANH_SHORT_TO_GND
+    | CAN_ERR_TRX_CANL_NO_WIRE
+    | CAN_ERR_TRX_CANL_SHORT_TO_BAT
+    | CAN_ERR_TRX_CANL_SHORT_TO_VCC
+    | CAN_ERR_TRX_CANL_SHORT_TO_GND
+    | CAN_ERR_TRX_CANL_SHORT_TO_CANH
+
+  let string_of = function
+    | CAN_ERR_TX_TIMEOUT -> "TX timeout (by netdevice driver)"
+    | CAN_ERR_LOSTARB -> "lost arbitration"
+    | CAN_ERR_CRTL -> "controller problems"
+    | CAN_ERR_PROT -> "protocol violations"
+    | CAN_ERR_TRX -> "transceiver status"
+    | CAN_ERR_ACK -> "received no ACK on transmission"
+    | CAN_ERR_BUSOFF -> "bus off"
+    | CAN_ERR_BUSERROR -> "bus error (may flood!!)"
+    | CAN_ERR_RESTARTED -> "controller restarted"
+
+  let string_of_status e =
+    let ctrl x = "controller: " ^ x in
+    let prot x = "protocol: " ^ x in
+    let trx x = "transceiver: " ^ x in
+    match e with
+    | CAN_ERR_CRTL_RX_OVERFLOW -> ctrl "RX buffer overflow"
+    | CAN_ERR_CRTL_TX_OVERFLOW -> ctrl "TX buffer overflow"
+    | CAN_ERR_CRTL_RX_WARNING -> ctrl "reached warning level for RX errors"
+    | CAN_ERR_CRTL_TX_WARNING -> ctrl "reached warning level for TX errors"
+    | CAN_ERR_CRTL_RX_PASSIVE -> ctrl "reached error passive status RX"
+    | CAN_ERR_CRTL_TX_PASSIVE -> ctrl "reached error passive status TX"
+    | CAN_ERR_PROT_BIT -> prot "single bit error"
+    | CAN_ERR_PROT_FORM -> prot "frame format error"
+    | CAN_ERR_PROT_STUFF -> prot "bit stuffing error"
+    | CAN_ERR_PROT_BIT0 -> prot "unable to send dominant bit"
+    | CAN_ERR_PROT_BIT1 -> prot "unable to send recessive bit"
+    | CAN_ERR_PROT_OVERLOAD -> prot "bus overload"
+    | CAN_ERR_PROT_ACTIVE -> prot "active error announcement"
+    | CAN_ERR_PROT_TX -> prot "error occurred on transmission"
+    | CAN_ERR_PROT_LOC_SOF -> prot "start of frame"
+    | CAN_ERR_PROT_LOC_ID28_21 -> prot "ID bits 28 - 21 (SFF: 10 - 3)"
+    | CAN_ERR_PROT_LOC_ID20_18 -> prot "ID bits 20 - 18 (SFF: 2 - 0)"
+    | CAN_ERR_PROT_LOC_SRTR -> prot "substitute RTR (SFF: RTR)"
+    | CAN_ERR_PROT_LOC_IDE -> prot "identifier extension"
+    | CAN_ERR_PROT_LOC_ID17_13 -> prot "ID bits 17-13"
+    | CAN_ERR_PROT_LOC_ID12_05 -> prot "ID bits 12-5"
+    | CAN_ERR_PROT_LOC_ID04_00 -> prot "ID bits 4-0"
+    | CAN_ERR_PROT_LOC_RTR -> prot "RTR"
+    | CAN_ERR_PROT_LOC_RES1 -> prot "reserved bit 1"
+    | CAN_ERR_PROT_LOC_RES0 -> prot "reserved bit 0"
+    | CAN_ERR_PROT_LOC_DLC -> prot "data length code"
+    | CAN_ERR_PROT_LOC_DATA -> prot "data section"
+    | CAN_ERR_PROT_LOC_CRC_SEQ -> prot "CRC sequence"
+    | CAN_ERR_PROT_LOC_CRC_DEL -> prot "CRC delimiter"
+    | CAN_ERR_PROT_LOC_ACK -> prot "ACK slot"
+    | CAN_ERR_PROT_LOC_ACK_DEL -> prot "ACK delimiter"
+    | CAN_ERR_PROT_LOC_EOF -> prot "end of frame"
+    | CAN_ERR_PROT_LOC_INTERM -> prot "intermission"
+    | CAN_ERR_TRX_CANH_NO_WIRE -> trx "can-high no wire"
+    | CAN_ERR_TRX_CANH_SHORT_TO_BAT -> trx "can-high short to bat"
+    | CAN_ERR_TRX_CANH_SHORT_TO_VCC -> trx "can-high short to vcc"
+    | CAN_ERR_TRX_CANH_SHORT_TO_GND -> trx "can-high short to gnd"
+    | CAN_ERR_TRX_CANL_NO_WIRE -> trx "can-low no write"
+    | CAN_ERR_TRX_CANL_SHORT_TO_BAT -> trx "can-low short to bat"
+    | CAN_ERR_TRX_CANL_SHORT_TO_VCC -> trx "can-low short to vcc"
+    | CAN_ERR_TRX_CANL_SHORT_TO_GND -> trx "can-low short to gnd"
+    | CAN_ERR_TRX_CANL_SHORT_TO_CANH -> trx "can-low short to can-high"
+
+  let of_frame frame =
+    let is_set_i flag c = flag land c = flag in
+
+    let open Frame in
+    match Frame.is_error frame with
+    | false -> [], []
+    | true ->
+      let e_class = List.fold_left (fun xs (bit, prop) -> if is_set bit frame.id then prop::xs else xs)
+        [] [
+          0x00000001l, CAN_ERR_TX_TIMEOUT;
+          0x00000002l, CAN_ERR_LOSTARB;
+          0x00000004l, CAN_ERR_CRTL;
+          0x00000008l, CAN_ERR_PROT;
+          0x00000010l, CAN_ERR_TRX;
+          0x00000020l, CAN_ERR_ACK;
+          0x00000040l, CAN_ERR_BUSOFF;
+          0x00000080l, CAN_ERR_BUSERROR;
+          0x00000100l, CAN_ERR_RESTARTED
+        ]
+      in
+      let f i p =
+        let b = Char.code (Bytes.get frame.data i) in
+        List.fold_left (fun xs (bit, prop) -> if p bit b then prop::xs else xs)
+      in
+      let e_status = f 1 is_set_i [] [
+          0x01, CAN_ERR_CRTL_RX_OVERFLOW;
+          0x02, CAN_ERR_CRTL_TX_OVERFLOW;
+          0x04, CAN_ERR_CRTL_RX_WARNING;
+          0x08, CAN_ERR_CRTL_TX_WARNING;
+          0x10, CAN_ERR_CRTL_RX_PASSIVE;
+          0x20, CAN_ERR_CRTL_TX_PASSIVE;
+        ]
+      in
+      let e_status = f 2 is_set_i e_status [
+          0x01, CAN_ERR_PROT_BIT;
+          0x02, CAN_ERR_PROT_FORM;
+          0x04, CAN_ERR_PROT_STUFF;
+          0x08, CAN_ERR_PROT_BIT0;
+          0x10, CAN_ERR_PROT_BIT1;
+          0x20, CAN_ERR_PROT_OVERLOAD;
+          0x40, CAN_ERR_PROT_ACTIVE;
+          0x80, CAN_ERR_PROT_TX;
+        ]
+      in
+      let e_status = f 3 (=) e_status [
+          0x03, CAN_ERR_PROT_LOC_SOF;
+          0x02, CAN_ERR_PROT_LOC_ID28_21;
+          0x06, CAN_ERR_PROT_LOC_ID20_18;
+          0x04, CAN_ERR_PROT_LOC_SRTR;
+          0x05, CAN_ERR_PROT_LOC_IDE;
+          0x07, CAN_ERR_PROT_LOC_ID17_13;
+          0x0F, CAN_ERR_PROT_LOC_ID12_05;
+          0x0E, CAN_ERR_PROT_LOC_ID04_00;
+          0x0C, CAN_ERR_PROT_LOC_RTR;
+          0x0D, CAN_ERR_PROT_LOC_RES1;
+          0x09, CAN_ERR_PROT_LOC_RES0;
+          0x0B, CAN_ERR_PROT_LOC_DLC;
+          0x0A, CAN_ERR_PROT_LOC_DATA;
+          0x08, CAN_ERR_PROT_LOC_CRC_SEQ;
+          0x18, CAN_ERR_PROT_LOC_CRC_DEL;
+          0x19, CAN_ERR_PROT_LOC_ACK;
+          0x1B, CAN_ERR_PROT_LOC_ACK_DEL;
+          0x1A, CAN_ERR_PROT_LOC_EOF;
+          0x12, CAN_ERR_PROT_LOC_INTERM;
+        ]
+      in
+      let e_status = f 4 (=) e_status [
+          0x04, CAN_ERR_TRX_CANH_NO_WIRE;
+          0x05, CAN_ERR_TRX_CANH_SHORT_TO_BAT;
+          0x06, CAN_ERR_TRX_CANH_SHORT_TO_VCC;
+          0x07, CAN_ERR_TRX_CANH_SHORT_TO_GND;
+          0x40, CAN_ERR_TRX_CANL_NO_WIRE;
+          0x50, CAN_ERR_TRX_CANL_SHORT_TO_BAT;
+          0x60, CAN_ERR_TRX_CANL_SHORT_TO_VCC;
+          0x70, CAN_ERR_TRX_CANL_SHORT_TO_GND;
+          0x80, CAN_ERR_TRX_CANL_SHORT_TO_CANH;
+        ]
+      in
+      e_class, e_status
+end
+
+module Socket = struct
+  type t = Unix.file_descr
+
   external create : string -> (t, [>`EUnix of Unix.error]) Result.result = "can_open"
+
+  let create_exn i = wrap_unix (create i) "socket"
 
   let close = Unix.close
 
   external set_receive_filter : t -> Filter.t list -> (t, [> `EUnix of Unix.error ]) Result.result = "can_receive_filter"
 
-  external set_error_flags : t -> error_flag list -> (t, [>`EUnix of Unix.error]) Result.result = "can_error_flags"
+  external set_error_flags : t -> Error.t list -> (t, [>`EUnix of Unix.error]) Result.result = "can_error_flags"
 
   external receive : t -> (Frame.t, [>`EUnix of Unix.error]) Result.result = "can_receive"
 
-  let receive_exn s =
-    match receive s with
-    | Result.Ok f -> f
-    | Result.Error (`EUnix err) -> raise (Unix.Unix_error (err, "recvmsg", ""))
+  let receive_exn s = wrap_unix (receive s) "recvmsg"
 
   external send : t -> Frame.t -> (int, [>`EUnix of Unix.error]) Result.result = "can_send"
 
-  let send_exn s f =
-    match send s f with
-    | Result.Ok len -> len
-    | Result.Error (`EUnix err) -> raise (Unix.Unix_error (err, "write", ""))
+  let send_exn s f = wrap_unix (send s f) "write"
 
   external fd : t -> t = "%identity"
 end

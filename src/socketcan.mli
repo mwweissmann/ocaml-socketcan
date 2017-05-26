@@ -208,14 +208,10 @@ module Filter : sig
     ?mask:Mask.t -> Id.t -> t
 end
 
-(** A CAN socket: This is a file descriptor on which CAN message frames can be
-    sent and received. *)
-module Socket : sig
-  (** A CAN socket for sending and receiving CAN message frames. *)
-  type t
-
-  (** error flags for configuring a CAN socket *)
-  type error_flag =
+(** Errors of the CAN interface *)
+module Error : sig
+  (** error class which gets encoded in the can-id of error-frames *)
+  type t =
     | CAN_ERR_TX_TIMEOUT
     | CAN_ERR_LOSTARB
     | CAN_ERR_CRTL
@@ -226,8 +222,72 @@ module Socket : sig
     | CAN_ERR_BUSERROR
     | CAN_ERR_RESTARTED
 
+  (** error status that is encoded in the payload of error-frames *)
+  type status =
+    | CAN_ERR_CRTL_RX_OVERFLOW
+    | CAN_ERR_CRTL_TX_OVERFLOW
+    | CAN_ERR_CRTL_RX_WARNING
+    | CAN_ERR_CRTL_TX_WARNING
+    | CAN_ERR_CRTL_RX_PASSIVE
+    | CAN_ERR_CRTL_TX_PASSIVE
+    | CAN_ERR_PROT_BIT
+    | CAN_ERR_PROT_FORM
+    | CAN_ERR_PROT_STUFF
+    | CAN_ERR_PROT_BIT0
+    | CAN_ERR_PROT_BIT1
+    | CAN_ERR_PROT_OVERLOAD
+    | CAN_ERR_PROT_ACTIVE
+    | CAN_ERR_PROT_TX
+    | CAN_ERR_PROT_LOC_SOF
+    | CAN_ERR_PROT_LOC_ID28_21
+    | CAN_ERR_PROT_LOC_ID20_18
+    | CAN_ERR_PROT_LOC_SRTR
+    | CAN_ERR_PROT_LOC_IDE
+    | CAN_ERR_PROT_LOC_ID17_13
+    | CAN_ERR_PROT_LOC_ID12_05
+    | CAN_ERR_PROT_LOC_ID04_00
+    | CAN_ERR_PROT_LOC_RTR
+    | CAN_ERR_PROT_LOC_RES1
+    | CAN_ERR_PROT_LOC_RES0
+    | CAN_ERR_PROT_LOC_DLC
+    | CAN_ERR_PROT_LOC_DATA
+    | CAN_ERR_PROT_LOC_CRC_SEQ
+    | CAN_ERR_PROT_LOC_CRC_DEL
+    | CAN_ERR_PROT_LOC_ACK
+    | CAN_ERR_PROT_LOC_ACK_DEL
+    | CAN_ERR_PROT_LOC_EOF
+    | CAN_ERR_PROT_LOC_INTERM
+    | CAN_ERR_TRX_CANH_NO_WIRE
+    | CAN_ERR_TRX_CANH_SHORT_TO_BAT
+    | CAN_ERR_TRX_CANH_SHORT_TO_VCC
+    | CAN_ERR_TRX_CANH_SHORT_TO_GND
+    | CAN_ERR_TRX_CANL_NO_WIRE
+    | CAN_ERR_TRX_CANL_SHORT_TO_BAT
+    | CAN_ERR_TRX_CANL_SHORT_TO_VCC
+    | CAN_ERR_TRX_CANL_SHORT_TO_GND
+    | CAN_ERR_TRX_CANL_SHORT_TO_CANH
+
+  (** [of_frame f] parses the given frame [f] for it's error class and error
+    status. If [f] is not an error frame, empty lists are returned. *)
+  val of_frame : Frame.t -> t list * status list
+
+  val string_of : t -> string
+
+  val string_of_status : status -> string
+end
+
+(** A CAN socket: This is a file descriptor on which CAN message frames can be
+    sent and received. *)
+module Socket : sig
+  (** A CAN socket for sending and receiving CAN message frames. *)
+  type t
+
   (** [create s] opens the can-interface named [s] (e.g. "can0") *)
   val create : string -> (t, [> `EUnix of Unix.error]) Result.result
+
+  (** [create_exn s] is identical to [create s] but will raise a
+    [Unix_error] exception in case of an error. *)
+  val create_exn : string -> t
 
   (** [close s] closes the socket [s]. *)
   val close : t -> unit
@@ -244,7 +304,7 @@ module Socket : sig
   (** [set_error_flags s es] will alter the socket [s] such that all errors as
       selected in [es] will now be sent as CAN frames to the socket.
       The original socket is modified and returned for convenience. *)
-  val set_error_flags : t -> error_flag list
+  val set_error_flags : t -> Error.t list
     -> (t, [> `EUnix of Unix.error ]) Result.result
 
   (** [receive s] will blocking wait for the next frame on the socket [s];
