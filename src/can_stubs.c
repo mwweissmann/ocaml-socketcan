@@ -130,7 +130,7 @@ CAMLprim value can_error_flags(value socket, value eflags) {
   CAMLlocal2(result, perrno);
 
   can_err_mask_t err_mask;
-  int fd, rc;
+  int fd, rc, lerrno;
 
   fd = Long_val(socket);
   err_mask = convert_flag_list(eflags, err_flag_table);
@@ -140,6 +140,7 @@ CAMLprim value can_error_flags(value socket, value eflags) {
   caml_acquire_runtime_system();
 
   if (-1 == rc) {
+    lerrno = errno;
     goto ERROR;
   }
 
@@ -150,7 +151,7 @@ CAMLprim value can_error_flags(value socket, value eflags) {
 ERROR:
   perrno = caml_alloc(2, 0);
   Store_field(perrno, 0, eunix); // `EUnix
-  Store_field(perrno, 1, unix_error_of_code(errno));
+  Store_field(perrno, 1, unix_error_of_code(lerrno));
 
   result = RESULT_ERROR;
   Store_field(result, 0, perrno);
@@ -165,7 +166,7 @@ CAMLprim value can_receive_filter(value socket, value flist) {
 
   size_t i, j, size;
   struct can_filter * rfilter;
-  int rc, fd;
+  int rc, fd, lerrno;
 
   fd = Long_val(socket);
 
@@ -183,7 +184,7 @@ CAMLprim value can_receive_filter(value socket, value flist) {
     // no filter, no messages
     rfilter = NULL;
   } else {
-    rfilter = alloca(size);
+    rfilter = calloc(1, size);
     j = 0;
     tail = flist;
     while (Val_emptylist != tail) {
@@ -197,6 +198,10 @@ CAMLprim value can_receive_filter(value socket, value flist) {
 
   caml_release_runtime_system();
   rc = setsockopt(fd, SOL_CAN_RAW, CAN_RAW_FILTER, rfilter, size);
+  lerrno = errno;
+  if (NULL != rfilter) {
+    free(rfilter);
+  }
   caml_acquire_runtime_system();
   
   if (-1 == rc) {
@@ -210,7 +215,7 @@ CAMLprim value can_receive_filter(value socket, value flist) {
 ERROR:
   perrno = caml_alloc(2, 0);
   Store_field(perrno, 0, eunix); // `EUnix
-  Store_field(perrno, 1, unix_error_of_code(errno));
+  Store_field(perrno, 1, unix_error_of_code(lerrno));
 
   result = RESULT_ERROR;
   Store_field(result, 0, perrno);
@@ -225,7 +230,7 @@ CAMLprim value can_receive(value socket) {
   CAMLlocal1(timestamp);
   struct can_frame cframe;
   ssize_t len;
-  int fd;
+  int fd, lerrno;
 
   struct msghdr msg;
   struct iovec iov;
@@ -253,6 +258,7 @@ CAMLprim value can_receive(value socket) {
   t.tv_nsec = 0;
 
   len = recvmsg(fd, &msg, 0);
+  lerrno = errno;
 
   if (CAN_MTU == len) {
     cmsg = CMSG_FIRSTHDR(&msg);
@@ -268,7 +274,7 @@ CAMLprim value can_receive(value socket) {
   if (CAN_MTU != len) {
     perrno = caml_alloc(2, 0);
     Store_field(perrno, 0, eunix); // `EUnix
-    Store_field(perrno, 1, unix_error_of_code(errno));
+    Store_field(perrno, 1, unix_error_of_code(lerrno));
     result = RESULT_ERROR;
     Store_field(result, 0, perrno);
   } else {
@@ -281,7 +287,7 @@ CAMLprim value can_receive(value socket) {
 
     timestamp = caml_alloc(2, 0);
     Store_field(timestamp, 0, caml_copy_int64(t.tv_sec));
-    Store_field(timestamp, 1, caml_copy_int64(t.tv_usec));
+    Store_field(timestamp, 1, caml_copy_int64(t.tv_nsec));
 
     frame = caml_alloc(3, 0); // Frame.t
     Store_field(frame, 0, id);
@@ -301,7 +307,7 @@ value can_send(value socket, value frame) {
   size_t dlc;
   ssize_t len;
   struct can_frame buffer;
-  int fd;
+  int fd, lerrno;
 
   fd = Long_val(socket);
   data = Field(frame, 1);
@@ -316,12 +322,13 @@ value can_send(value socket, value frame) {
 
   caml_release_runtime_system();
   len = write(fd, &buffer, sizeof(buffer));
+  lerrno = errno;
   caml_acquire_runtime_system();
 
   if (-1 == len) {
     perrno = caml_alloc(2, 0);
     Store_field(perrno, 0, eunix); // `EUnix
-    Store_field(perrno, 1, unix_error_of_code(errno));
+    Store_field(perrno, 1, unix_error_of_code(lerrno));
 
     result = RESULT_ERROR;
     Store_field(result, 0, perrno);
