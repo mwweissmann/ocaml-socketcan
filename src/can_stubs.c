@@ -34,6 +34,9 @@
 
 #include <posix-time/posix-time.h>
 
+#define RESULT_OK caml_alloc(1, 0)
+#define RESULT_ERROR caml_alloc(1, 1)
+
 static value eunix;
 
 CAMLprim value can_initialize(void) {
@@ -90,7 +93,7 @@ CAMLprim value can_open(value ifname) {
 
   caml_acquire_runtime_system();
 
-  result = caml_alloc(1, 0); // Result.Ok
+  result = RESULT_OK;
   Store_field(result, 0, Val_long(fd));
   goto END;
 
@@ -103,7 +106,7 @@ ERROR_CLEAN:
   Store_field(perrno, 0, eunix); // `EUnix
   Store_field(perrno, 1, unix_error_of_code(lerrno));
 
-  result = caml_alloc(1, 1); // Result.Error
+  result = RESULT_ERROR;
   Store_field(result, 0, perrno);
 
 END:
@@ -140,7 +143,7 @@ CAMLprim value can_error_flags(value socket, value eflags) {
     goto ERROR;
   }
 
-  result = caml_alloc(1, 0); // Result.Ok
+  result = RESULT_OK;
   Store_field(result, 0, socket);
   goto END;
 
@@ -149,7 +152,7 @@ ERROR:
   Store_field(perrno, 0, eunix); // `EUnix
   Store_field(perrno, 1, unix_error_of_code(errno));
 
-  result = caml_alloc(1, 1); // Result.Error
+  result = RESULT_ERROR;
   Store_field(result, 0, perrno);
 
 END:
@@ -200,8 +203,8 @@ CAMLprim value can_receive_filter(value socket, value flist) {
     goto ERROR;
   }
 
-  result = caml_alloc(1, 0); // Result.Ok
-  Store_field(result, 0, socket);
+  result = RESULT_OK;
+  Store_field(result, 0, Val_long(fd));
   goto END;
 
 ERROR:
@@ -209,7 +212,7 @@ ERROR:
   Store_field(perrno, 0, eunix); // `EUnix
   Store_field(perrno, 1, unix_error_of_code(errno));
 
-  result = caml_alloc(1, 1); // Result.Error
+  result = RESULT_ERROR;
   Store_field(result, 0, perrno);
 
 END:
@@ -219,7 +222,7 @@ END:
 CAMLprim value can_receive(value socket) {
   CAMLparam1(socket);
   CAMLlocal5(result, perrno, frame, id, data);
-  CAMLlocal3(timestamp, sec, nsec);
+  CAMLlocal1(timestamp);
   struct can_frame cframe;
   ssize_t len;
   int fd;
@@ -266,7 +269,7 @@ CAMLprim value can_receive(value socket) {
     perrno = caml_alloc(2, 0);
     Store_field(perrno, 0, eunix); // `EUnix
     Store_field(perrno, 1, unix_error_of_code(errno));
-    result = caml_alloc(1, 1); // Result.Error
+    result = RESULT_ERROR;
     Store_field(result, 0, perrno);
   } else {
     assert(CAN_MAX_DLEN >= cframe.can_dlc);
@@ -276,12 +279,16 @@ CAMLprim value can_receive(value socket) {
     data = caml_alloc_string(cframe.can_dlc); // payload
     memcpy(String_val(data), (void *) & cframe.data, cframe.can_dlc);
 
+    timestamp = caml_alloc(2, 0);
+    Store_field(timestamp, 0, caml_copy_int64(t.tv_sec));
+    Store_field(timestamp, 1, caml_copy_int64(t.tv_usec));
+
     frame = caml_alloc(3, 0); // Frame.t
     Store_field(frame, 0, id);
     Store_field(frame, 1, data);
-    Store_field(frame, 2, val_timespec(t));
+    Store_field(frame, 2, timestamp);
 
-    result = caml_alloc(1, 0); // Result.Ok
+    result = RESULT_OK;
     Store_field(result, 0, frame);
   }
 
@@ -316,10 +323,10 @@ value can_send(value socket, value frame) {
     Store_field(perrno, 0, eunix); // `EUnix
     Store_field(perrno, 1, unix_error_of_code(errno));
 
-    result = caml_alloc(1, 1); // Result.Error
+    result = RESULT_ERROR;
     Store_field(result, 0, perrno);
   } else {
-    result = caml_alloc(1, 0); // Result.Ok
+    result = RESULT_OK;
     Store_field(result, 0, Val_long(len));
   }
 
