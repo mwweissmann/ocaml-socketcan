@@ -32,13 +32,13 @@ let _ =
     begin
       let () = print_endline "out" in
       let fd = get_ok (Socketcan.Socket.create "vcan0") in
-      let msg = get_ok (Socketcan.Frame.create (Socketcan.Id.create_sff 42) "hello!") in
+      let msg = get_ok (Socketcan.Frame.create (Socketcan.Id.create_sff 42) (Bytes.of_string "hello!")) in
       let () = Socketcan.Frame.print msg in
       let _ = Socketcan.Socket.send fd msg in
-      let msg = get_ok (Socketcan.Frame.create (Socketcan.Id.create_sff 815) "hello") in
+      let msg = get_ok (Socketcan.Frame.create (Socketcan.Id.create_sff 815) (Bytes.of_string "hello")) in
       let () = Socketcan.Frame.print msg in
       let _ = Socketcan.Socket.send fd msg in
-      let msg = get_ok (Socketcan.Frame.create (Socketcan.Id.create_sff 23) "hello") in
+      let msg = get_ok (Socketcan.Frame.create (Socketcan.Id.create_sff 23) (Bytes.of_string "hello")) in
       let () = Socketcan.Frame.print msg in
       let _ = Socketcan.Socket.send fd msg in
       ()
